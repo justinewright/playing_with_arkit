@@ -102,7 +102,7 @@ extension ARView {
     }
 
     @objc func handleTap(recognizer: UITapGestureRecognizer) {
-        if  recognizer.state != .ended {return }
+        if  recognizer.state != .began {return }
         let sceneView = recognizer.view as! ARSCNView
         let tapLocation = recognizer.location(in: sceneView)
         let query = sceneView.raycastQuery(from: tapLocation, allowing: .existingPlaneGeometry, alignment: .horizontal)
@@ -110,12 +110,12 @@ extension ARView {
         // check to see if hitting the plane
         guard let result = sceneView.session.raycast(query!).first else { return }
 
-        let searchResults = sceneView.hitTest(tapLocation)
+        let searchResults = sceneView.hitTest(tapLocation, options: nil)
         print(searchResults.count)
         // check to see if hitting existing node
         print("tap")
         for searchResult in searchResults.filter({ $0.node.name != nil }) {
-            print(searchResult.node.name ?? "")
+            print("node name:\(searchResult.node.name ?? "")")
             if searchResult.node.name == "landmark" {
                 // display message
                 print("display message")
@@ -123,26 +123,37 @@ extension ARView {
             }
         }
         addLandmark(hitTestResult: result)
+
     }
 
     func addLandmark(hitTestResult: ARRaycastResult) {
         print("adding landmark")
-        let landmarkNode = SCNNode(geometry: SCNPlane(width: 0.15, height: 0.15))
-        let landmarkImage = SCNNode(geometry: SCNPlane(width: 0.075, height: 0.075))
-        landmarkImage.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "dagaz")
-        landmarkImage.geometry?.firstMaterial?.isDoubleSided = true
-        landmarkImage.name = "landmark"
+        let landmarkNode = SCNNode(geometry: SCNBox(width: 0.04, height: 0.01, length: 0.075, chamferRadius: 0.05))
 
         let transform = hitTestResult.worldTransform
         let thirdColumn = transform.columns.3
         landmarkNode.name = "landmark"
         landmarkNode.geometry?.firstMaterial?.diffuse.contents = UIColor(.red)
-        landmarkImage.geometry?.firstMaterial?.isDoubleSided = true
-        landmarkNode.position = SCNVector3(thirdColumn.x, thirdColumn.y + 0.0005, thirdColumn.z)
-        landmarkNode.eulerAngles = SCNVector3(90.degreesToRadians, 0, 0)
-        landmarkImage.position = SCNVector3(0, 0.001, 0)
+        landmarkNode.geometry?.firstMaterial?.transparency = 0.3
+        landmarkNode.geometry?.firstMaterial?.emission.contents = UIImage(named: "dagaz")
+        landmarkNode.filters = addBloom()
+        landmarkNode.geometry?.firstMaterial?.isDoubleSided = true
+        landmarkNode.position = SCNVector3(thirdColumn.x, thirdColumn.y, thirdColumn.z)
 
-        landmarkNode.addChildNode(landmarkImage)
+
+
+//        landmarkNode.eulerAngles = SCNVector3(90.degreesToRadians, 0, 0)
+
+//        let landmarkImage = SCNNode(geometry: SCNPlane(width: 0.04, height: 0.075))
+//        landmarkImage.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "dagaz")
+//        landmarkImage.geometry?.firstMaterial?.isDoubleSided = true
+//        landmarkImage.name = "landmark"
+//        landmarkImage.eulerAngles = SCNVector3(90.degreesToRadians, 0, 0)
+////
+////
+//        landmarkImage.position = SCNVector3(0, 0.0051, 0)
+////
+//        landmarkNode.addChildNode(landmarkImage)
         self.arView.scene.rootNode.addChildNode(landmarkNode)
     }
 
@@ -176,6 +187,14 @@ extension ARView {
         node.enumerateChildNodes { (childNode, _) in
             childNode.removeFromParentNode()
         }
+    }
+
+    func addBloom() -> [CIFilter]? {
+        let bloomFilter = CIFilter(name: "CIBloom")!
+        bloomFilter.setValue(10, forKey: "inputIntensity")
+        bloomFilter.setValue(30, forKey: "inputRadius")
+
+        return [bloomFilter]
     }
 }
 
