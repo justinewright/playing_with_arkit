@@ -102,7 +102,7 @@ extension ARView {
     }
 
     @objc func handleTap(recognizer: UITapGestureRecognizer) {
-        if  recognizer.state != .began {return }
+        if  recognizer.state != .ended { return }
         let sceneView = recognizer.view as! ARSCNView
         let tapLocation = recognizer.location(in: sceneView)
         let query = sceneView.raycastQuery(from: tapLocation, allowing: .existingPlaneGeometry, alignment: .horizontal)
@@ -118,28 +118,47 @@ extension ARView {
             print("node name:\(searchResult.node.name ?? "")")
             if searchResult.node.name == "landmark" {
                 // display message
-                print("display message")
+                addMessage(hitTestResult: result)
                 return
             }
         }
         addLandmark(hitTestResult: result)
-        addMessage(hitTestResult: result)
 
     }
 
     func addLandmark(hitTestResult: ARRaycastResult) {
         print("adding landmark")
-        let landmarkNode = SCNNode(geometry: SCNBox(width: 0.075, height: 0.01, length: 0.075, chamferRadius: 0.05))
+//        let landmarkNode = SCNNode(geometry: SCNBox(width: 0.2, height: 0.01, length: 0.2, chamferRadius: 0.05))
+        let plane = SCNPlane(width: 0.15, height: 0.15)
+        let landmarkNode = SCNNode(geometry: plane)
+        landmarkNode.eulerAngles = SCNVector3(90.degreesToRadians, 0, 0)
+
+        let minVec = landmarkNode.boundingBox.min
+        let maxVec = landmarkNode.boundingBox.max
+        let bound = SCNVector3Make(
+            maxVec.x - minVec.x,
+            maxVec.y - minVec.y,
+            maxVec.z - minVec.z)
+
+//        textNode.position =  SCNVector3(thirdColumn.x, 0, thirdColumn.z)
+
+        //change center
+        let dx = minVec.x + 0.5 * (bound.x)
+        let dy = minVec.y + 0.5 * (bound.y)
+        let dz = minVec.z + 0.5 * (bound.z)
+        landmarkNode.pivot = SCNMatrix4MakeTranslation(dx, dy, dz)
 
         let transform = hitTestResult.worldTransform
         let thirdColumn = transform.columns.3
         landmarkNode.name = "landmark"
-        landmarkNode.geometry?.firstMaterial?.diffuse.contents = UIColor(.red)
-        landmarkNode.geometry?.firstMaterial?.transparency = 0.5
-        landmarkNode.geometry?.firstMaterial?.emission.contents = UIImage(named: "dagaz")
+        landmarkNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "dagaz")
+        landmarkNode.geometry?.firstMaterial?.selfIllumination.contents = UIColor.orange
+        landmarkNode.geometry?.firstMaterial?.transparency = 0.9
+//        landmarkNode.geometry?.firstMaterial?.multiply.contents = UIImage(named: "dagaz")
+//        landmarkNode.geometry?.firstMaterial?.emission.contents = UIImage(named: "dagaz")
         landmarkNode.filters = addBloom()
         landmarkNode.geometry?.firstMaterial?.isDoubleSided = true
-        landmarkNode.position = SCNVector3(thirdColumn.x, thirdColumn.y, thirdColumn.z)
+        landmarkNode.position = SCNVector3(thirdColumn.x - 0.001, thirdColumn.y, thirdColumn.z)
 
         self.arView.scene.rootNode.addChildNode(landmarkNode)
     }
