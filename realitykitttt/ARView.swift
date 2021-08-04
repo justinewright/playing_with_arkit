@@ -97,7 +97,7 @@ extension ARView {
 
     func enableTapGesture() {
         let longPressGestureRecongiser = UILongPressGestureRecognizer(target: self, action: #selector(handleTap(recognizer: )))
-        longPressGestureRecongiser.minimumPressDuration = 0.1
+        longPressGestureRecongiser.minimumPressDuration = 0.2
         self.arView.addGestureRecognizer(longPressGestureRecongiser)
     }
 
@@ -123,37 +123,24 @@ extension ARView {
             }
         }
         addLandmark(hitTestResult: result)
+        addMessage(hitTestResult: result)
 
     }
 
     func addLandmark(hitTestResult: ARRaycastResult) {
         print("adding landmark")
-        let landmarkNode = SCNNode(geometry: SCNBox(width: 0.04, height: 0.01, length: 0.075, chamferRadius: 0.05))
+        let landmarkNode = SCNNode(geometry: SCNBox(width: 0.075, height: 0.01, length: 0.075, chamferRadius: 0.05))
 
         let transform = hitTestResult.worldTransform
         let thirdColumn = transform.columns.3
         landmarkNode.name = "landmark"
         landmarkNode.geometry?.firstMaterial?.diffuse.contents = UIColor(.red)
-        landmarkNode.geometry?.firstMaterial?.transparency = 0.3
+        landmarkNode.geometry?.firstMaterial?.transparency = 0.5
         landmarkNode.geometry?.firstMaterial?.emission.contents = UIImage(named: "dagaz")
         landmarkNode.filters = addBloom()
         landmarkNode.geometry?.firstMaterial?.isDoubleSided = true
         landmarkNode.position = SCNVector3(thirdColumn.x, thirdColumn.y, thirdColumn.z)
 
-
-
-//        landmarkNode.eulerAngles = SCNVector3(90.degreesToRadians, 0, 0)
-
-//        let landmarkImage = SCNNode(geometry: SCNPlane(width: 0.04, height: 0.075))
-//        landmarkImage.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "dagaz")
-//        landmarkImage.geometry?.firstMaterial?.isDoubleSided = true
-//        landmarkImage.name = "landmark"
-//        landmarkImage.eulerAngles = SCNVector3(90.degreesToRadians, 0, 0)
-////
-////
-//        landmarkImage.position = SCNVector3(0, 0.0051, 0)
-////
-//        landmarkNode.addChildNode(landmarkImage)
         self.arView.scene.rootNode.addChildNode(landmarkNode)
     }
 
@@ -166,6 +153,64 @@ extension ARView {
         return nil
     }
 
+
+    func addMessage(hitTestResult: ARRaycastResult) {
+        print("adding message")
+
+        let textGeometry = SCNText(string: "Hello", extrusionDepth: 1)
+        textGeometry.font = UIFont(name: "AmericanTypewriterCondesnsedLight", size: 16)
+        textGeometry.flatness = 0
+        textGeometry.firstMaterial?.diffuse.contents = UIColor.white
+        let textNode = SCNNode(geometry: textGeometry)
+        let transform = hitTestResult.worldTransform
+        let thirdColumn = transform.columns.3
+        let fontScale: Float = 0.001
+
+        textNode.scale = SCNVector3(fontScale, fontScale, fontScale)
+
+        let minVec = textNode.boundingBox.min
+        let maxVec = textNode.boundingBox.max
+        let bound = SCNVector3Make(
+            maxVec.x - minVec.x,
+            maxVec.y - minVec.y,
+            maxVec.z - minVec.z)
+
+//        textNode.position =  SCNVector3(thirdColumn.x, 0, thirdColumn.z)
+
+        //change center
+        let dx = minVec.x + 0.5 * (bound.x)
+        let dy = minVec.y + 0.5 * (bound.y)
+        let dz = minVec.z + 0.5 * (bound.z)
+        textNode.pivot = SCNMatrix4MakeTranslation(dx, dy, dz)
+
+        print (bound.x )
+        let pad: Float = 5
+        let plane = SCNPlane(width: CGFloat(bound.x + pad)*CGFloat(fontScale),
+                             height: CGFloat(bound.y + pad)*CGFloat(fontScale) )
+
+        plane.cornerRadius = 0.2
+
+        let bubbleNode = SCNNode(geometry: plane)
+        bubbleNode.geometry?.firstMaterial?.diffuse.contents = UIColor.black.withAlphaComponent(0.75)
+//        bubbleNode.pivot = SCNMatrix4MakeTranslation(dx, dy, dz)
+        bubbleNode.position = SCNVector3(thirdColumn.x, 0, thirdColumn.z)
+//        let bubbleNodePosition = SCNVector3(
+//            textNode.position.x, textNode.position.y, textNode.position.z - 0.001)
+//        bubbleNode.position = bubbleNodePosition
+
+//        bubbleNode.position = SCNVector3(
+//            (minVec.x + bound.x) / 2,
+//            (minVec.y + bound.y) / 2 ,
+//            (minVec.z - 0.001) / 2
+//        )
+
+        bubbleNode.addChildNode(textNode)
+        self.arView.scene.rootNode.addChildNode(bubbleNode)
+    }
+
+    func updateText(text: String, atPosition position:SCNVector3) {
+
+    }
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         guard let planeAnchor = anchor as? ARPlaneAnchor else {return}
         print("new flat surface detected")
