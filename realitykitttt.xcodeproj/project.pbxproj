@@ -13,6 +13,8 @@
 		216909E926B45AAB0094910B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 216909E826B45AAB0094910B /* Preview Assets.xcassets */; };
 		21690A1126B5CF3E0094910B /* ARView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21690A1026B5CF3E0094910B /* ARView.swift */; };
 		2186CB5C26B972D900ECC643 /* artt.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 2186CB5B26B972D900ECC643 /* artt.scnassets */; };
+		21DD6D4E26BC013B00922000 /* OverlayPlane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21DD6D4D26BC013B00922000 /* OverlayPlane.swift */; };
+		21DD6D5026BC097400922000 /* PointGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21DD6D4F26BC097400922000 /* PointGenerator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		216909EA26B45AAB0094910B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		21690A1026B5CF3E0094910B /* ARView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARView.swift; sourceTree = "<group>"; };
 		2186CB5B26B972D900ECC643 /* artt.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = artt.scnassets; sourceTree = "<group>"; };
+		21DD6D4D26BC013B00922000 /* OverlayPlane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayPlane.swift; sourceTree = "<group>"; };
+		21DD6D4F26BC097400922000 /* PointGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointGenerator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,8 +63,10 @@
 				216909E126B45AAA0094910B /* realitykittttApp.swift */,
 				216909E326B45AAA0094910B /* ContentView.swift */,
 				21690A1026B5CF3E0094910B /* ARView.swift */,
+				21DD6D4F26BC097400922000 /* PointGenerator.swift */,
 				216909E526B45AAB0094910B /* Assets.xcassets */,
 				216909EA26B45AAB0094910B /* Info.plist */,
+				21DD6D4D26BC013B00922000 /* OverlayPlane.swift */,
 				216909E726B45AAB0094910B /* Preview Content */,
 				2186CB5B26B972D900ECC643 /* artt.scnassets */,
 			);
@@ -147,7 +153,9 @@
 			files = (
 				216909E426B45AAA0094910B /* ContentView.swift in Sources */,
 				21690A1126B5CF3E0094910B /* ARView.swift in Sources */,
+				21DD6D5026BC097400922000 /* PointGenerator.swift in Sources */,
 				216909E226B45AAA0094910B /* realitykittttApp.swift in Sources */,
+				21DD6D4E26BC013B00922000 /* OverlayPlane.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
