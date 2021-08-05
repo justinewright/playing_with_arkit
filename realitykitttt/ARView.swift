@@ -196,7 +196,7 @@ extension ARView {
         textGeometry.flatness = 0
         textGeometry.firstMaterial?.diffuse.contents = UIColor.white
         let textNode = SCNNode(geometry: textGeometry)
-        let fontScale: Float = 0.001
+        let fontScale: Float = 0.01
         textNode.scale = SCNVector3(fontScale, fontScale, fontScale)
 
         //change center
@@ -255,8 +255,8 @@ extension ARView {
             randomPoints.forEach { randomPoint in
                 let location = SCNVector3(
                     Float(randomPoint.x),
-                    0,
-                    Float(randomPoint.y))
+                    0.001,
+                    Float(randomPoint.y) )
                 node.addChildNode((addLandmark(at: location)))
                 numberOfPlacedMessages += 1
             }
