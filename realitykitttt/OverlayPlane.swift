@@ -36,7 +36,7 @@ class OverlayPlane: SCNNode {
 
         let planeNode = self.childNodes.first!
 
-        planeNode.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(geometry: self.planeGeomeotry, options: nil))
+//        planeNode.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(geometry: self.planeGeomeotry, options: nil))
     }
 
     private func setup() {
@@ -47,13 +47,11 @@ class OverlayPlane: SCNNode {
 
         let material = SCNMaterial()
         material.diffuse.contents = UIImage(named: "grid")
-        material.transparency = 0.5
+        material.transparency = 1
 
         self.planeGeomeotry.materials = [material]
 
         let planeNode = SCNNode(geometry: self.planeGeomeotry)
-        planeNode.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(geometry: self.planeGeomeotry, options: nil))
-        planeNode.physicsBody?.categoryBitMask = BodyType.plane.rawValue
 
         planeNode.position = SCNVector3(anchor.center.x, 0, anchor.center.z)
         planeNode.transform = SCNMatrix4MakeRotation(Float(-Double.pi / 2), 1, 0, 0 )
