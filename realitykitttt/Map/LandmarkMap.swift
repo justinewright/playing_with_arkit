@@ -15,13 +15,23 @@ struct CoordPairs: Hashable {
 class LandmarkMap {
     private(set) var availablityMap: [CoordPairs: Bool]!
     private var nodeDistance: Float
+    private var centerX: Float
+    private var centerY: Float
     private var xShift: Float
     private var yShift: Float
 
     init(width: Float, height: Float, nodeDistance: Float, centerX: Float, centerY: Float) {
+        self.centerX = centerX
+        self.centerY = centerY
+        self.nodeDistance = nodeDistance
         xShift = 0
         yShift = 0
-        self.nodeDistance = nodeDistance
+        genMap(width: width, height: height)
+    }
+
+    func update(width: Float, height: Float, centerX: Float, centerY: Float) {
+        xShift = centerX - self.centerX
+        yShift = centerY - self.centerY
         genMap(width: width, height: height)
     }
 
@@ -30,6 +40,18 @@ class LandmarkMap {
         genMapUpperRight(width: width, height: height)
         genMapLowerLeft(width: width, height: height)
         genMapLowerRight(width: width, height: height)
+    }
+
+    func getRandomPosition() -> (Float, Float)? {
+        if let randomPoint = availablityMap.filter({ $0.value }).randomElement() {
+            usePoint(coordPairs: randomPoint.key)
+            return (Float(randomPoint.key.x) * nodeDistance, Float(randomPoint.key.y) * nodeDistance)
+        }
+        return nil
+    }
+
+    var spaceAvailable: Bool {
+        availablityMap.filter({ $0.value }).count == 0
     }
 
     private func genMapUpperLeft(width: Float, height: Float) {
@@ -75,15 +97,8 @@ class LandmarkMap {
         Int(floor( distance / 2 / nodeDistance ))
     }
 
-    func getRandomPosition() -> (Float, Float)? {
-        if let randomPoint = availablityMap.filter({ $0.value }).randomElement() {
-            usePoint(coordPairs: randomPoint.key)
-            return (Float(randomPoint.key.x) * nodeDistance, Float(randomPoint.key.y) * nodeDistance)
-        }
-        return nil
-    }
-
-    func usePoint(coordPairs: CoordPairs) {
+    private func usePoint(coordPairs: CoordPairs) {
         availablityMap[coordPairs] = false
     }
+
 }
