@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		211C2B1F26BD481200E7284B /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211C2B1E26BD481200E7284B /* Line.swift */; };
+		211C2B2126BD624B00E7284B /* SpawnSiteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211C2B2026BD624B00E7284B /* SpawnSiteManager.swift */; };
+		211C2B2426BD62B900E7284B /* AnchorMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211C2B2326BD62B900E7284B /* AnchorMap.swift */; };
 		216909E226B45AAA0094910B /* realitykittttApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216909E126B45AAA0094910B /* realitykittttApp.swift */; };
 		216909E426B45AAA0094910B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216909E326B45AAA0094910B /* ContentView.swift */; };
 		216909E626B45AAB0094910B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 216909E526B45AAB0094910B /* Assets.xcassets */; };
@@ -22,6 +24,8 @@
 
 /* Begin PBXFileReference section */
 		211C2B1E26BD481200E7284B /* Line.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
+		211C2B2026BD624B00E7284B /* SpawnSiteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpawnSiteManager.swift; sourceTree = "<group>"; };
+		211C2B2326BD62B900E7284B /* AnchorMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnchorMap.swift; sourceTree = "<group>"; };
 		216909DE26B45AAA0094910B /* realitykitttt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = realitykitttt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		216909E126B45AAA0094910B /* realitykittttApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = realitykittttApp.swift; sourceTree = "<group>"; };
 		216909E326B45AAA0094910B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -47,6 +51,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		211C2B2226BD625000E7284B /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				211C2B2026BD624B00E7284B /* SpawnSiteManager.swift */,
+				211C2B2326BD62B900E7284B /* AnchorMap.swift */,
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
 		216909D526B45AAA0094910B = {
 			isa = PBXGroup;
 			children = (
@@ -66,6 +79,7 @@
 		216909E026B45AAA0094910B /* realitykitttt */ = {
 			isa = PBXGroup;
 			children = (
+				211C2B2226BD625000E7284B /* Map */,
 				216909E126B45AAA0094910B /* realitykittttApp.swift */,
 				216909E326B45AAA0094910B /* ContentView.swift */,
 				21690A1026B5CF3E0094910B /* ARView.swift */,
@@ -164,6 +178,8 @@
 				21690A1126B5CF3E0094910B /* ARView.swift in Sources */,
 				21DD6D5026BC097400922000 /* PointGenerator.swift in Sources */,
 				21DD6D5226BC2D5D00922000 /* Landmark.swift in Sources */,
+				211C2B2126BD624B00E7284B /* SpawnSiteManager.swift in Sources */,
+				211C2B2426BD62B900E7284B /* AnchorMap.swift in Sources */,
 				216909E226B45AAA0094910B /* realitykittttApp.swift in Sources */,
 				211C2B1F26BD481200E7284B /* Line.swift in Sources */,
 				21DD6D4E26BC013B00922000 /* OverlayPlane.swift in Sources */,
