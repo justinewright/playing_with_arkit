@@ -84,13 +84,12 @@ class ARView: UIViewController, ARSCNViewDelegate {
 extension ARView {
 
     func enableTapGesture() {
-        let longPressGestureRecongiser = UILongPressGestureRecognizer(target: self, action: #selector(handleTap(recognizer: )))
-        longPressGestureRecongiser.minimumPressDuration = 0.2
-        self.arView.addGestureRecognizer(longPressGestureRecongiser)
+        let tapGestureRecongiser = UITapGestureRecognizer(target: self, action: #selector(handleTap(recognizer: )))
+        self.arView.addGestureRecognizer(tapGestureRecongiser)
     }
 
     @objc func handleTap(recognizer: UITapGestureRecognizer) {
-        if  recognizer.state != .ended { return }
+        if  recognizer.state == .ended { return }
         let sceneView = recognizer.view as! ARSCNView
         let tapLocation = recognizer.location(in: sceneView)
         let query = sceneView.raycastQuery(from: tapLocation, allowing: .existingPlaneGeometry, alignment: .horizontal)
@@ -119,16 +118,6 @@ extension ARView {
         landmarkNode.position = position
         return landmarkNode
     }
-
-    func createFloor(_ position: SCNVector3) -> SCNNode? {
-        let sparklesSCN = SCNScene(named: "artt.scnassets/sparkles.scn")
-        if let node = sparklesSCN?.rootNode.childNode(withName: "sparkles", recursively: false) {
-            node.position = position
-            return node
-        }
-        return nil
-    }
-
 
     func addMessage(at position: SCNVector3) {
         print("adding message")
@@ -195,15 +184,7 @@ extension ARView {
         }
     }
 
-    func addBloom() -> [CIFilter]? {
-        let bloomFilter = CIFilter(name: "CIBloom")!
-        bloomFilter.setValue(10, forKey: "inputIntensity")
-        bloomFilter.setValue(30, forKey: "inputRadius")
-
-        return [bloomFilter]
-    }
 }
-
 
 extension Int {
     var degreesToRadians: Double {return Double(self) * .pi/180}

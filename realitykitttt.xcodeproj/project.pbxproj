@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		211C2B1F26BD481200E7284B /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211C2B1E26BD481200E7284B /* Line.swift */; };
 		216909E226B45AAA0094910B /* realitykittttApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216909E126B45AAA0094910B /* realitykittttApp.swift */; };
 		216909E426B45AAA0094910B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216909E326B45AAA0094910B /* ContentView.swift */; };
 		216909E626B45AAB0094910B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 216909E526B45AAB0094910B /* Assets.xcassets */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		211C2B1E26BD481200E7284B /* Line.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
 		216909DE26B45AAA0094910B /* realitykitttt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = realitykitttt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		216909E126B45AAA0094910B /* realitykittttApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = realitykittttApp.swift; sourceTree = "<group>"; };
 		216909E326B45AAA0094910B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 				2186CB5B26B972D900ECC643 /* artt.scnassets */,
 				21DD6D5126BC2D5D00922000 /* Landmark.swift */,
 				21DD6D5326BC31AD00922000 /* Message.swift */,
+				211C2B1E26BD481200E7284B /* Line.swift */,
 			);
 			path = realitykitttt;
 			sourceTree = "<group>";
@@ -162,6 +165,7 @@
 				21DD6D5026BC097400922000 /* PointGenerator.swift in Sources */,
 				21DD6D5226BC2D5D00922000 /* Landmark.swift in Sources */,
 				216909E226B45AAA0094910B /* realitykittttApp.swift in Sources */,
+				211C2B1F26BD481200E7284B /* Line.swift in Sources */,
 				21DD6D4E26BC013B00922000 /* OverlayPlane.swift in Sources */,
 				21DD6D5426BC31AD00922000 /* Message.swift in Sources */,
 			);
