@@ -25,8 +25,12 @@ struct ARViewContainer: UIViewControllerRepresentable {
 class ARView: UIViewController, ARSCNViewDelegate {
     lazy var planes = [OverlayPlane]()
     lazy var landmarks = [Landmark]()
-    var message: Message!
+    var messages: [String: Message] = [
+        "0": Message(tagID: "0", body: "aaaaaa", sender: "0"),
+        "1": Message(tagID: "1", body: "bbbbbb", sender: "1")
+    ]
 
+    var message: Message!
     var numberOfMessages = 2
     var numberOfPlacedMessages = 0
 
@@ -106,7 +110,7 @@ extension ARView {
             let name = searchResult.node.name ?? ""
             if name.contains("landmark") {
                 // display message
-                addMessage(at: getPosition(of: result))
+                addMessage(id: String(name.suffix(name.count-8)), at: getPosition(of: result))
                 return
             }
         }
@@ -119,13 +123,13 @@ extension ARView {
         return landmarkNode
     }
 
-    func addMessage(at position: SCNVector3) {
+    func addMessage(id: String, at position: SCNVector3) {
         print("adding message")
         //link to repo
         if message != nil {
             message.removeFromParentNode()
         }
-        message = Message(tagID: "1", body: "Yo yo", sender: "Jay")
+        message = messages[id]
         message.position = SCNVector3(position.x, 0, position.z)
         self.arView.scene.rootNode.addChildNode(message)
     }

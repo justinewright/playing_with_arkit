@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		211C2B1F26BD481200E7284B /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211C2B1E26BD481200E7284B /* Line.swift */; };
-		211C2B2126BD624B00E7284B /* SpawnSiteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211C2B2026BD624B00E7284B /* SpawnSiteManager.swift */; };
 		211C2B2426BD62B900E7284B /* LandmarkMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211C2B2326BD62B900E7284B /* LandmarkMap.swift */; };
 		216909E226B45AAA0094910B /* realitykittttApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216909E126B45AAA0094910B /* realitykittttApp.swift */; };
 		216909E426B45AAA0094910B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216909E326B45AAA0094910B /* ContentView.swift */; };
@@ -24,7 +23,6 @@
 
 /* Begin PBXFileReference section */
 		211C2B1E26BD481200E7284B /* Line.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
-		211C2B2026BD624B00E7284B /* SpawnSiteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpawnSiteManager.swift; sourceTree = "<group>"; };
 		211C2B2326BD62B900E7284B /* LandmarkMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandmarkMap.swift; sourceTree = "<group>"; };
 		216909DE26B45AAA0094910B /* realitykitttt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = realitykitttt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		216909E126B45AAA0094910B /* realitykittttApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = realitykittttApp.swift; sourceTree = "<group>"; };
@@ -54,7 +52,6 @@
 		211C2B2226BD625000E7284B /* Map */ = {
 			isa = PBXGroup;
 			children = (
-				211C2B2026BD624B00E7284B /* SpawnSiteManager.swift */,
 				211C2B2326BD62B900E7284B /* LandmarkMap.swift */,
 			);
 			path = Map;
@@ -178,7 +175,6 @@
 				21690A1126B5CF3E0094910B /* ARView.swift in Sources */,
 				21DD6D5026BC097400922000 /* PointGenerator.swift in Sources */,
 				21DD6D5226BC2D5D00922000 /* Landmark.swift in Sources */,
-				211C2B2126BD624B00E7284B /* SpawnSiteManager.swift in Sources */,
 				211C2B2426BD62B900E7284B /* LandmarkMap.swift in Sources */,
 				216909E226B45AAA0094910B /* realitykittttApp.swift in Sources */,
 				211C2B1F26BD481200E7284B /* Line.swift in Sources */,
