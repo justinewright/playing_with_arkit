@@ -93,7 +93,6 @@ extension ARView {
     }
 
     @objc func handleTap(recognizer: UITapGestureRecognizer) {
-        if  recognizer.state == .ended { return }
         let sceneView = recognizer.view as! ARSCNView
         let tapLocation = recognizer.location(in: sceneView)
         let query = sceneView.raycastQuery(from: tapLocation, allowing: .existingPlaneGeometry, alignment: .horizontal)
@@ -101,7 +100,7 @@ extension ARView {
         // check to see if hitting the plane
         guard let result = sceneView.session.raycast(query!).first else { return }
 
-        let searchResults = sceneView.hitTest(tapLocation, options: [:] )
+        let searchResults = sceneView.hitTest(tapLocation, options: [SCNHitTestOption.searchMode: 1] )
         print(searchResults.count)
         // check to see if hitting existing node
         print("tap")
@@ -116,9 +115,9 @@ extension ARView {
         }
     }
 
-    func addLandmark(at position: SCNVector3) -> SCNNode {
+    func addLandmark(at position: SCNVector3, for id: String) -> SCNNode {
         print("adding landmark")
-        let landmarkNode = Landmark()
+        let landmarkNode = Landmark(tagID: id)
         landmarkNode.position = position
         return landmarkNode
     }
@@ -167,13 +166,13 @@ extension ARView {
         var randomPointGen = RandomPointGenerator()
         let numberOfMessages = numberOfMessages - numberOfPlacedMessages
         let randomPoints = randomPointGen.generatePoints(numPoints: numberOfMessages, maxWidth: width, maxLength: height)
-        randomPoints.forEach { randomPoint in
-            let location = SCNVector3 ( node.position.x + Float(randomPoint.x),
+        for i in 0 ..< messages.count {
+            let location = SCNVector3 ( node.position.x + Float(randomPoints[i].x),
                                         node.position.y + 0.01,
-                                        node.position.z + Float(randomPoint.y)
+                                        node.position.z + Float(randomPoints[i].y)
             )
             DispatchQueue.main.async {
-                self.arView.scene.rootNode.addChildNode(self.addLandmark(at: location))
+                self.arView.scene.rootNode.addChildNode(self.addLandmark(at: location, for: Array(self.messages.keys)[i]))
                 self.numberOfPlacedMessages += 1
             }
         }
@@ -187,6 +186,7 @@ extension ARView {
             childNode.removeFromParentNode()
         }
     }
+
 
 }
 

@@ -17,7 +17,7 @@ class Landmark: SCNNode {
 
     private var planeGeomeotry: SCNPlane!
 
-    init(tagID: String = "0") {
+    init(tagID: String) {
         super.init()
         id = tagID
         setup()
