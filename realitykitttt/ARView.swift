@@ -33,6 +33,7 @@ class ARView: UIViewController, ARSCNViewDelegate {
     var message: Message!
     var numberOfMessages = 2
     var numberOfPlacedMessages = 0
+    var landmarkMap: LandmarkMap!
 
     var arView: ARSCNView {
         return self.view as! ARSCNView
@@ -137,6 +138,10 @@ extension ARView {
         guard let planeAnchor = anchor as? ARPlaneAnchor else {return}
 //        print("new flat surface detected")
         let plane = OverlayPlane(anchor: planeAnchor)
+        let anchorCenterX = planeAnchor.center.x
+        let anchorCenterY = planeAnchor.center.y
+        landmarkMap = LandmarkMap(width: plane.width, height: plane.height, nodeDistance: 0.05, centerX: anchorCenterX, centerY: anchorCenterY)
+
         self.planes.append(plane)
         node.addChildNode(plane)
     }
@@ -153,6 +158,12 @@ extension ARView {
 
         if let existingPlane = plane {
             existingPlane.update(anchor: planeAnchor)
+            if let map = landmarkMap {
+                let anchorCenterX = existingPlane.anchor.center.x
+                let anchorCenterY = existingPlane.anchor.center.y
+
+                map.update(width: existingPlane.width, height: existingPlane.height, centerX: anchorCenterX, centerY: anchorCenterY)
+            }
             addLandmarks(node: node, width: existingPlane.width, height: existingPlane.height)
         }
     }
@@ -161,21 +172,45 @@ extension ARView {
         numberOfPlacedMessages < numberOfMessages
     }
 
+    func addCircle(at position: SCNVector3) -> SCNNode {
+        let circleNode = CirclePlane()
+        circleNode.position = position
+        return circleNode
+    }
+    
     func addLandmarks(node: SCNNode, width: Float, height: Float)  {
         if !isMessageToAdd { return }
         var randomPointGen = RandomPointGenerator()
         let numberOfMessages = numberOfMessages - numberOfPlacedMessages
         let randomPoints = randomPointGen.generatePoints(numPoints: numberOfMessages, maxWidth: width, maxLength: height)
-        for i in 0 ..< messages.count {
-            let location = SCNVector3 ( node.position.x + Float(randomPoints[i].x),
-                                        node.position.y + 0.01,
-                                        node.position.z + Float(randomPoints[i].y)
-            )
+//        let location = SCNVector3(node.position.x, node.position.y + 0.01, node.position.y)
+//        self.arView.scene.rootNode.addChildNode(self.addCircle(at: location))
+//        DispatchQueue.main.async {
+//                     self.arView.scene.rootNode.addChildNode(self.addCircle(at: location))
+//                 }
+        print("Avaliable Spots: \(landmarkMap.avaliableSpots)")
+        print("Total Spots: \(landmarkMap.availablityMap.count)")
+        if !landmarkMap.spaceAvailable {return}
+        for i in 0..<landmarkMap.avaliableSpots {
+            print(i)
+            let gridLocation = landmarkMap.getRandomPosition()
+            let location = SCNVector3(node.position.x + gridLocation!.0, node.position.y + 0.01, node.position.z + gridLocation!.1)
             DispatchQueue.main.async {
-                self.arView.scene.rootNode.addChildNode(self.addLandmark(at: location, for: Array(self.messages.keys)[i]))
-                self.numberOfPlacedMessages += 1
-            }
+                self.arView.scene.rootNode.addChildNode(self.addCircle(at: location))
+
         }
+//        for i in 0 ..< messages.count {
+//            let location = SCNVector3 ( node.position.x + Float(randomPoints[i].x),
+//                                        node.position.y + 0.01,
+//                                        node.position.z + Float(randomPoints[i].y)
+//            )
+//            DispatchQueue.main.async {
+//                self.arView.scene.rootNode.addChildNode(self.addLandmark(at: location, for: Array(self.messages.keys)[i]))
+//                self.numberOfPlacedMessages += 1
+//            }
+//        }
+        }
+
     }
 
     func renderer(_ renderer: SCNSceneRenderer, didRemove node: SCNNode, for anchor: ARAnchor) {
@@ -186,8 +221,6 @@ extension ARView {
             childNode.removeFromParentNode()
         }
     }
-
-
 }
 
 extension Int {

@@ -64,7 +64,7 @@ class OverlayPlane: SCNNode {
     }
 
     var width: Float {
-        self.anchor.extent.x
+        Float(self.planeGeomeotry.width)
     }
 
     var height: Float {

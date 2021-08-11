@@ -21,6 +21,7 @@ class LandmarkMap {
     private var yShift: Float
 
     init(width: Float, height: Float, nodeDistance: Float, centerX: Float, centerY: Float) {
+        availablityMap = [:]
         self.centerX = centerX
         self.centerY = centerY
         self.nodeDistance = nodeDistance
@@ -35,6 +36,9 @@ class LandmarkMap {
         genMap(width: width, height: height)
     }
 
+    var avaliableSpots: Int {
+        availablityMap.filter({ $0.value }).count
+    }
     private func genMap(width: Float, height: Float) {
         genMapUpperLeft(width: width, height: height)
         genMapUpperRight(width: width, height: height)
@@ -43,15 +47,17 @@ class LandmarkMap {
     }
 
     func getRandomPosition() -> (Float, Float)? {
-        if let randomPoint = availablityMap.filter({ $0.value }).randomElement() {
+        let filteredMap = availablityMap.filter({ $0.value })
+        if let randomPoint = filteredMap.randomElement() {
             usePoint(coordPairs: randomPoint.key)
-            return (Float(randomPoint.key.x) * nodeDistance, Float(randomPoint.key.y) * nodeDistance)
+            return (centerX + Float(randomPoint.key.x) * nodeDistance,
+                    2*centerY + Float(randomPoint.key.y) * nodeDistance)
         }
         return nil
     }
 
     var spaceAvailable: Bool {
-        availablityMap.filter({ $0.value }).count == 0
+        availablityMap.filter({ $0.value }).count > 0
     }
 
     private func genMapUpperLeft(width: Float, height: Float) {
@@ -83,8 +89,8 @@ class LandmarkMap {
     }
 
     private func addToMap (xMin: Int, xMax: Int, yMin: Int, yMax: Int) {
-        for x in xMin...xMax {
-            for y in yMin...yMax {
+        for x in xMin..<xMax {
+            for y in yMin..<yMax {
                 if availablityMap.keys.contains(CoordPairs(x: x, y: y)) {
                     continue
                 }
