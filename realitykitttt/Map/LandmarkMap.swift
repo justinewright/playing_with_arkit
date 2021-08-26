@@ -38,7 +38,12 @@ class LandmarkMap {
     }
 
     var spaceAvailable: Bool {
-        usedAreaPercentage < maxCapacity
+        print(usedAreaPercentage)
+        return usedAreaPercentage < maxCapacity
+    }
+
+    var availableSpots: Int {
+        availablityMap.filter({ $0.value }).count
     }
 
     func getRandomPosition() -> (Float, Float)? {
@@ -55,7 +60,8 @@ class LandmarkMap {
 
 private extension LandmarkMap {
     var usedAreaPercentage: Float {
-        Float(availablityMap.filter({ $0.value }).count) / Float(availablityMap.count)
+        if availablityMap.count < 1 {return 0}
+        else {return 1.0 - Float(availablityMap.filter({ $0.value }).count) / Float(availablityMap.count)}
     }
 
     func genMap(width: Float, height: Float) {

@@ -26,8 +26,8 @@ class ARView: UIViewController, ARSCNViewDelegate {
     lazy var planes = [OverlayPlane]()
     lazy var landmarks = [Landmark]()
     var messages: [String: Message] = [
-        "0": Message(tagID: "0", body: "aaaaaa", sender: "0"),
-        "1": Message(tagID: "1", body: "bbbbbb", sender: "1")
+        "0": Message(tagID: "0", body: "messageA", sender: "senderA"),
+        "1": Message(tagID: "1", body: "messageB", sender: "senderB")
     ]
 
     var message: Message!
@@ -140,7 +140,7 @@ extension ARView {
         let plane = OverlayPlane(anchor: planeAnchor)
         let anchorCenterX = planeAnchor.center.x
         let anchorCenterY = planeAnchor.center.y
-        landmarkMap = LandmarkMap(width: plane.width, height: plane.height, nodeDistance: 0.05, centerX: anchorCenterX, centerY: anchorCenterY)
+        landmarkMap = LandmarkMap(width: plane.width, height: plane.height, nodeDistance: 0.15, centerX: anchorCenterX, centerY: anchorCenterY)
 
         self.planes.append(plane)
         node.addChildNode(plane)
@@ -180,36 +180,38 @@ extension ARView {
     
     func addLandmarks(node: SCNNode, width: Float, height: Float)  {
         if !isMessageToAdd { return }
-        var randomPointGen = RandomPointGenerator()
-        let numberOfMessages = numberOfMessages - numberOfPlacedMessages
-        let randomPoints = randomPointGen.generatePoints(numPoints: numberOfMessages, maxWidth: width, maxLength: height)
 //        let location = SCNVector3(node.position.x, node.position.y + 0.01, node.position.y)
 //        self.arView.scene.rootNode.addChildNode(self.addCircle(at: location))
 //        DispatchQueue.main.async {
 //                     self.arView.scene.rootNode.addChildNode(self.addCircle(at: location))
 //                 }
-        print("Avaliable Spots: \(landmarkMap.avaliableSpots)")
-        print("Total Spots: \(landmarkMap.availablityMap.count)")
-        if !landmarkMap.spaceAvailable {return}
-        for i in 0..<landmarkMap.avaliableSpots {
-            print(i)
-            let gridLocation = landmarkMap.getRandomPosition()
-            let location = SCNVector3(node.position.x + gridLocation!.0, node.position.y + 0.01, node.position.z + gridLocation!.1)
-            DispatchQueue.main.async {
-                self.arView.scene.rootNode.addChildNode(self.addCircle(at: location))
-
-        }
-//        for i in 0 ..< messages.count {
-//            let location = SCNVector3 ( node.position.x + Float(randomPoints[i].x),
-//                                        node.position.y + 0.01,
-//                                        node.position.z + Float(randomPoints[i].y)
-//            )
+//        print("Avaliable Spots: \(landmarkMap.spaceAvailable)")
+//        print("Total Spots: \(landmarkMap.availablityMap.count)")
+//        if !landmarkMap.spaceAvailable {return}
+//        for i in 0..<landmarkMap.availableSpots {
+//            print(i)
+//            let gridLocation = landmarkMap.getRandomPosition()
+//            let location = SCNVector3(node.position.x + gridLocation!.0, node.position.y + 0.01, node.position.z + gridLocation!.1)
 //            DispatchQueue.main.async {
-//                self.arView.scene.rootNode.addChildNode(self.addLandmark(at: location, for: Array(self.messages.keys)[i]))
-//                self.numberOfPlacedMessages += 1
+//                self.arView.scene.rootNode.addChildNode(self.addCircle(at: location))
 //            }
 //        }
+        var placedMessages = 0
+        for i in 0 ..< messages.count - numberOfPlacedMessages {
+            print(landmarkMap.spaceAvailable)
+            if !landmarkMap.spaceAvailable { break }
+            let gridLocation = landmarkMap.getRandomPosition()
+            let location = SCNVector3(node.position.x + gridLocation!.0, node.position.y + 0.02, node.position.z + gridLocation!.1)
+
+            DispatchQueue.main.async {
+                self.arView.scene.rootNode.addChildNode(self.addLandmark(at: location, for: Array(self.messages.keys)[i]))
+                self.numberOfPlacedMessages += 1
+            }
+            placedMessages += 1
+            print("placing message")
         }
+        numberOfPlacedMessages += placedMessages
+        print(numberOfPlacedMessages)
 
     }
 

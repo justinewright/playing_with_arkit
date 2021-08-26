@@ -47,7 +47,7 @@ class OverlayPlane: SCNNode {
 
         let material = SCNMaterial()
         material.diffuse.contents = UIImage(named: "grid")
-        material.transparency = 1
+        material.transparency = 0
 
         self.planeGeomeotry.materials = [material]
 

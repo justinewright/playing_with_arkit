@@ -11,8 +11,8 @@ import ARKit
 import UIKit
 
 class CirclePlane: SCNNode {
-    var width = 0.05
-    var height = 0.05
+    var width = 0.15
+    var height = 0.15
 
     private var planeGeomeotry: SCNPlane!
 
