@@ -16,6 +16,6 @@ The AR system for SoulMessages.
 ## Roadmap
 
 - [x] Distributes Message Landmarks
-- [x] Tappable Landmarks
+- [x] Tappable Landmarks (display and hide message)
 - [x] Message Bubbles
 - [ ] Integration with Message System
